@@ -7,10 +7,12 @@ const LoginPage = (props) => {
   document.title = 'BookMarket | Login';
   const { setCurrentUser } = props;
   const navigate = useNavigate();
+
   //State
   let [email, setEmail] = useState('');
   let [pass, setPass] = useState('');
   let [msg, setMsg] = useState('');
+  let [check, setCheck] = useState(true);
   //Handler
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -20,13 +22,16 @@ const LoginPage = (props) => {
   };
   const handleLogin = async (e) => {
     e.preventDefault();
+    setCheck(false);
     try {
       const user = await AuthService.login(email, pass);
       if (user.data.data.token) {
         localStorage.setItem('user', JSON.stringify(user.data.data));
       }
       setCurrentUser(AuthService.getCurrentUser());
+
       window.alert('登入成功！按下確定後導向個人檔案頁面...');
+      setCheck(true);
       navigate('/profile');
     } catch (err) {
       setMsg(err.response.data.message);
@@ -77,9 +82,15 @@ const LoginPage = (props) => {
               </div>
               <br />
               <div className='d-md-flex justify-content-md-end'>
-                <button type='submit' className='btn btn-primary'>
-                  登入
-                </button>
+                {check === true ? (
+                  <button type='submit' className='btn btn-primary'>
+                    登入
+                  </button>
+                ) : (
+                  <button type='submit' className='btn btn-primary' disabled>
+                    登入中...
+                  </button>
+                )}
               </div>
             </form>
           </div>
