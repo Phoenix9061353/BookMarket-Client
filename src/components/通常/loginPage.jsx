@@ -35,6 +35,7 @@ const LoginPage = (props) => {
       navigate('/profile');
     } catch (err) {
       setMsg(err.response.data.message);
+      setCheck(true);
     }
   };
   ////////////////////////////////////////////////////////
