@@ -13,6 +13,7 @@ const SignupPage = (props) => {
   let [passC, setPassC] = useState('');
   let [role, setRole] = useState('user');
   let [msg, setMsg] = useState('');
+  let [check, setCheck] = useState(false);
   //handler
   const handleN = (e) => {
     setName(e.target.value.trim());
@@ -33,6 +34,7 @@ const SignupPage = (props) => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     setMsg('');
+    setCheck(true);
     try {
       const data = await AuthService.signup({
         name,
@@ -45,10 +47,12 @@ const SignupPage = (props) => {
         localStorage.setItem('user', JSON.stringify(data.data.data));
       }
       setCurrentUser(AuthService.getCurrentUser());
+      setCheck(false);
       window.alert('註冊成功！按下確定後導向個人頁面...');
       navigate('/profile');
     } catch (err) {
       setMsg(err.response.data.message);
+      setCheck(false);
     }
   };
   /////////////////////////////////////////////////
@@ -143,9 +147,15 @@ const SignupPage = (props) => {
               </select>
             </div>
             <div className='d-md-flex justify-content-md-end'>
-              <button className='btn btn-primary' type='submit'>
-                註冊
-              </button>
+              {check ? (
+                <button className='btn btn-primary' type='submit' disabled>
+                  註冊中...
+                </button>
+              ) : (
+                <button className='btn btn-primary' type='submit'>
+                  註冊
+                </button>
+              )}
             </div>
           </form>
         </div>

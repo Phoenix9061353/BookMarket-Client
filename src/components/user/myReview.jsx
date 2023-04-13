@@ -12,6 +12,7 @@ const MyReview = (props) => {
 
   let [reviews, setReviews] = useState('');
   let [check, setCheck] = useState(0);
+  let [preparing, setPreparing] = useState(false);
 
   let arrD = [];
   if (review.review.includes('\n')) {
@@ -37,15 +38,19 @@ const MyReview = (props) => {
   };
 
   const deleteReview = async (e) => {
+    setPreparing(true);
     const check = window.confirm('是否刪除此評論？(提醒：執行後無法復原)');
     if (check) {
       try {
         await ReviewService.deleteReview(e.target.id);
         window.alert('刪除成功！');
-        window.location.reload();
+        setPreparing(false);
+        window.location.reload(true);
       } catch (err) {
         setMsg(err.response.data.message);
       }
+    } else {
+      setPreparing(false);
     }
   };
   //useEffect
@@ -109,22 +114,48 @@ const MyReview = (props) => {
                     <h5 className='card-title'>{r.name}</h5>
                     <p className='card-text'>評價： {r.rating} / 5</p>
                     <div className='d-grid gap-2 d-md-flex justify-content-md-end'>
-                      <button
-                        className='btn btn-danger'
-                        onClick={deleteReview}
-                        id={r._id}
-                      >
-                        刪除
-                      </button>
-                      <button
-                        id={r._id}
-                        onClick={getOneReview}
-                        className='btn btn-primary'
-                        data-bs-toggle='modal'
-                        data-bs-target='#reviewModal'
-                      >
-                        詳細
-                      </button>
+                      {!preparing && (
+                        <>
+                          <button
+                            className='btn btn-danger'
+                            onClick={deleteReview}
+                            id={r._id}
+                          >
+                            刪除
+                          </button>
+                          <button
+                            id={r._id}
+                            onClick={getOneReview}
+                            className='btn btn-primary'
+                            data-bs-toggle='modal'
+                            data-bs-target='#reviewModal'
+                          >
+                            詳細
+                          </button>
+                        </>
+                      )}
+                      {preparing && (
+                        <>
+                          <button
+                            className='btn btn-danger'
+                            onClick={deleteReview}
+                            id={r._id}
+                            disabled
+                          >
+                            刪除中...
+                          </button>
+                          <button
+                            id={r._id}
+                            onClick={getOneReview}
+                            className='btn btn-primary'
+                            data-bs-toggle='modal'
+                            data-bs-target='#reviewModal'
+                            disabled
+                          >
+                            詳細
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
