@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../../service/authService';
+import Waiting from './Waiting';
+import Warning from './Warning';
 
 const SignupPage = (props) => {
   document.title = 'BookMarket | Sign Up';
@@ -60,14 +62,8 @@ const SignupPage = (props) => {
     <div style={{ padding: '3rem' }}>
       <h3>帳號註冊</h3>
       <hr />
-      {msg && (
-        <div
-          className='alert alert-danger d-flex align-items-center'
-          role='alert'
-        >
-          <div>{msg}</div>
-        </div>
-      )}
+      {msg && <Warning message={msg} colorType={'danger'} />}
+      {check && <Waiting message={'處理中...'} />}
       <div className='row align-items-md-stretch'>
         <div className='col-md-6 p-4 bg-light rounded-3'>
           <form onSubmit={handleSignUp}>
@@ -147,15 +143,9 @@ const SignupPage = (props) => {
               </select>
             </div>
             <div className='d-md-flex justify-content-md-end'>
-              {check ? (
-                <button className='btn btn-primary' type='submit' disabled>
-                  註冊中...
-                </button>
-              ) : (
-                <button className='btn btn-primary' type='submit'>
-                  註冊
-                </button>
-              )}
+              <button className='btn btn-primary' type='submit'>
+                註冊
+              </button>
             </div>
           </form>
         </div>

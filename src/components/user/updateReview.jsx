@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReviewService from '../../service/reviewService';
+import Waiting from '../通常/Waiting';
+import Warning from '../通常/Warning';
 
 const Updatereview = (props) => {
   const { currentUser, review } = props;
   const navigate = useNavigate();
-  const submitBtn = document.querySelector('.btn--post');
   //state
   let [msg, setMsg] = useState('');
-  let [content, setContent] = useState(review.review);
-  let [rating, setRating] = useState(review.rating);
+  let [content, setContent] = useState(review ? review.review : '');
+  let [rating, setRating] = useState(review ? review.rating : '');
+  let [prepare, setPrepare] = useState(false);
   //handler
   const handleContent = (e) => {
     setContent(e.target.value.trim());
@@ -20,19 +22,20 @@ const Updatereview = (props) => {
 
   const updateReview = async (e) => {
     e.preventDefault();
-    submitBtn.textContent = '處理中';
-    submitBtn.classList.add('pe-none');
+    setPrepare(true);
     try {
       await ReviewService.updateReview(e.target.id, {
         review: content,
         rating,
       });
-      submitBtn.textContent = '修改';
+
       window.alert('修改成功！導向評論集(My Reviews)頁面...');
-      submitBtn.classList.remove('pe-none');
+
+      setPrepare(false);
       navigate('/my-reviews');
     } catch (err) {
       setMsg(err.response.data.message);
+      setPrepare(false);
     }
   };
   //////////////////////////////////////////////////
@@ -41,16 +44,15 @@ const Updatereview = (props) => {
       style={{ padding: '3rem' }}
       className='container d-flex justify-content-center'
     >
-      {(!currentUser || currentUser.user.role !== 'user') && (
-        <div
-          className='alert alert-danger d-flex justify-content-center'
-          role='alert'
-        >
-          <div className='fw-bold'>
-            🚨 請先以「使用者(user)」身份登入後再拜訪此頁面！🚨
-          </div>
-        </div>
+      {(!currentUser ||
+        currentUser.user.role !== 'user' ||
+        currentUser.user._id !== review.user._id) && (
+        <Warning
+          message={'🚨 只有撰寫該Review的使用者可以拜訪此頁面！🚨'}
+          colorType={'danger'}
+        />
       )}
+      {prepare && <Waiting message={'處理中...'} />}
       {currentUser &&
         currentUser.user.role === 'user' &&
         currentUser.user._id === review.user._id && (
@@ -58,14 +60,8 @@ const Updatereview = (props) => {
             <div className='h-100 p-4 bg-light border rounded-3'>
               <h4>修改書評</h4>
               <br />
-              {msg && (
-                <div
-                  className='alert alert-danger d-flex align-items-center'
-                  role='alert'
-                >
-                  {msg}
-                </div>
-              )}
+              {msg && <Warning message={msg} colorType={'danger'} />}
+
               <form id={review._id} onSubmit={updateReview}>
                 <div className='mb-3'>
                   <label htmlFor='bookName' className='form-label fw-bold'>

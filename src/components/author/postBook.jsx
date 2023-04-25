@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BookService from '../../service/bookService';
+import Warning from '../通常/Warning';
+import Waiting from '../通常/Waiting';
 
 const PostBook = (props) => {
   const { currentUser } = props;
@@ -14,6 +16,7 @@ const PostBook = (props) => {
   let [description, setDescription] = useState('');
   let [price, setPrice] = useState(0);
   let [type, setType] = useState('日常');
+  let [prepare, setPrepare] = useState(false);
   //handler
   const handleN = (e) => {
     setName(e.target.value.trim());
@@ -34,6 +37,7 @@ const PostBook = (props) => {
   const postBook = async (e) => {
     e.preventDefault();
     setMsg('');
+    setPrepare(true);
     document.querySelector('.btn--post').textContent = '處理中...';
     document.querySelector('.btn--post').classList.add('pe-none');
     try {
@@ -46,6 +50,7 @@ const PostBook = (props) => {
       });
       document.querySelector('.btn--post').textContent = 'Post';
       document.querySelector('.btn--post').classList.remove('pe-none');
+      setPrepare(false);
       const check = window.confirm('上傳成功！導向作品頁面(My Book)?');
       if (check) return navigate('/my-books');
       if (!check) {
@@ -61,29 +66,20 @@ const PostBook = (props) => {
       }
     } catch (err) {
       setMsg(err.response.data.message);
+      setPrepare(false);
     }
   };
   ////////////////////////////////////////////////////
   return (
     <div style={{ padding: '3rem' }}>
       {(!currentUser || currentUser.user.role !== 'author') && (
-        <div
-          className='alert alert-danger d-flex justify-content-center'
-          role='alert'
-        >
-          <div className='fw-bold'>
-            🚨 請先以身份「作者(author)」登入後再拜訪此頁面！🚨
-          </div>
-        </div>
+        <Warning
+          message={'🚨 請先以身份「作者(author)」登入後再拜訪此頁面！🚨'}
+          colorType={'danger'}
+        />
       )}
-      {msg && (
-        <div
-          className='alert alert-warning d-flex align-items-center'
-          role='alert'
-        >
-          {msg}
-        </div>
-      )}
+      {msg && <Warning message={msg} colorType={'warning'} />}
+      {prepare && <Waiting message={'處理中...'} />}
       {currentUser && currentUser.user.role === 'author' && (
         <form onSubmit={postBook}>
           <div className='mb-3'>

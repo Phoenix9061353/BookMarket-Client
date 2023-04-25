@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BookService from '../../service/bookService';
+import Waiting from '../通常/Waiting';
+import Warning from '../通常/Warning';
+
+//////////////////////////////////////////////////////////
 
 const UpdateBook = (props) => {
   const { currentUser, book } = props;
@@ -13,6 +17,7 @@ const UpdateBook = (props) => {
   let [description, setDescription] = useState(book.description);
   let [price, setPrice] = useState(book.price);
   let [type, setType] = useState(book.type);
+  let [prepare, setPrepare] = useState(false);
   //handler
   const handleN = (e) => {
     setName(e.target.value.trim());
@@ -32,6 +37,7 @@ const UpdateBook = (props) => {
   //handleUpdate
   const updateOneBook = async (e) => {
     e.preventDefault();
+    setPrepare(true);
     document.querySelector('.btn--post').textContent = '處理中...';
     document.querySelector('.btn--post').classList.add('pe-none');
 
@@ -45,10 +51,12 @@ const UpdateBook = (props) => {
       });
       document.querySelector('.btn--post').classList.remove('pe-none');
       document.querySelector('.btn--post').textContent = 'Update';
+      setPrepare(false);
       window.alert('修改成功！按下確定後導回作品集頁面(My Book)...');
       navigate('/my-books');
     } catch (err) {
       setMsg(err.response.data.message);
+      setPrepare(false);
     }
   };
   ///////////////////////////////////////////
@@ -60,28 +68,18 @@ const UpdateBook = (props) => {
       {(!currentUser ||
         currentUser.user.role !== 'author' ||
         currentUser.user._id !== book.author._id) && (
-        <div
-          className='alert alert-danger d-flex justify-content-center'
-          role='alert'
-        >
-          <div className='fw-bold'>
-            🚨 只有此本書的「作者(author)」登入後才可以拜訪此頁面！🚨
-          </div>
-        </div>
+        <Warning
+          message={'🚨 只有此本書的「作者(author)」登入後才可以拜訪此頁面！🚨'}
+          colorType={'danger'}
+        />
       )}
+      {prepare && <Waiting message={'處理中...'} />}
       {currentUser &&
         currentUser.user.role === 'author' &&
         currentUser.user._id === book.author._id && (
           <div className='col-md-6'>
             <div className='h-100 p-4 bg-light border rounded-3'>
-              {msg && (
-                <div
-                  className='alert alert-danger d-flex align-items-center'
-                  role='alert'
-                >
-                  {msg}
-                </div>
-              )}
+              {msg && <Warning message={msg} colorType={'danger'} />}
               <form id={book._id} onSubmit={updateOneBook}>
                 <div className='mb-3'>
                   <label htmlFor='inputName' className='form-label fw-bold'>

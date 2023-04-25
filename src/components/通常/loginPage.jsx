@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../../service/authService';
+import Waiting from './Waiting';
+import Warning from './Warning';
 
 ///////////////////////////////////////////////////////////
 const LoginPage = (props) => {
@@ -12,7 +14,7 @@ const LoginPage = (props) => {
   let [email, setEmail] = useState('');
   let [pass, setPass] = useState('');
   let [msg, setMsg] = useState('');
-  let [check, setCheck] = useState(true);
+  let [check, setCheck] = useState(false);
   //Handler
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -22,7 +24,7 @@ const LoginPage = (props) => {
   };
   const handleLogin = async (e) => {
     e.preventDefault();
-    setCheck(false);
+    setCheck(true);
     try {
       const user = await AuthService.login(email, pass);
       if (user.data.data.token) {
@@ -31,11 +33,11 @@ const LoginPage = (props) => {
       setCurrentUser(AuthService.getCurrentUser());
 
       window.alert('登入成功！按下確定後導向個人檔案頁面...');
-      setCheck(true);
+      setCheck(false);
       navigate('/profile');
     } catch (err) {
       setMsg(err.response.data.message);
-      setCheck(true);
+      setCheck(false);
     }
   };
   ////////////////////////////////////////////////////////
@@ -43,14 +45,8 @@ const LoginPage = (props) => {
     <div style={{ padding: '3rem' }}>
       <h3>帳號登入</h3>
       <hr />
-      {msg && (
-        <div
-          className='alert alert-danger d-flex align-items-center'
-          role='alert'
-        >
-          <div>{msg}</div>
-        </div>
-      )}
+      {msg && <Warning message={msg} colorType={'danger'} />}
+      {check && <Waiting message={'登入中...'} />}
       <div className='container pt-3'>
         <div className='col-md-4'>
           <div className='h-100 p-4 bg-light border rounded-3'>
@@ -83,15 +79,9 @@ const LoginPage = (props) => {
               </div>
               <br />
               <div className='d-md-flex justify-content-md-end'>
-                {check === true ? (
-                  <button type='submit' className='btn btn-primary'>
-                    登入
-                  </button>
-                ) : (
-                  <button type='submit' className='btn btn-primary' disabled>
-                    登入中...
-                  </button>
-                )}
+                <button type='submit' className='btn btn-primary'>
+                  登入
+                </button>
               </div>
             </form>
           </div>

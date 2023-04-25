@@ -19,6 +19,8 @@ import MyReview from './components/user/myReview';
 import PostReview from './components/user/postReview';
 import Updatereview from './components/user/updateReview';
 
+import './style.css';
+
 function App() {
   let [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
   let [book, setBook] = useState({

@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BookService from '../../service/bookService';
 import BookingService from '../../service/bookingService';
+import Loading from './Loading';
+import Warning from './Warning';
+import Waiting from './Waiting';
 
 const SearchBook = (props) => {
   const { currentUser, book, setBook } = props;
@@ -16,6 +19,7 @@ const SearchBook = (props) => {
   let [searchInput, setSearchInput] = useState('');
   let [check, setCheck] = useState(0);
   let [msg, setMsg] = useState('default');
+  let [prepare, setPrepare] = useState(false);
   //handler
   const handleS = (e) => {
     setSearchInput(e.target.value.trim());
@@ -24,26 +28,31 @@ const SearchBook = (props) => {
     if (!currentUser || currentUser.user.role !== 'user') {
       return window.alert('請先以「使用者（user）」的身份登入後再執行此動作！');
     }
-    // window.alert('即將跳轉至購買頁面...');
     if (currentUser.user.role === 'user') {
+      setPrepare(true);
       try {
         const result = await BookingService.checkBooking(e.target.id);
         if (result.data.data.message === 'Yes') {
+          setPrepare(false);
           return window.alert('你已經擁有此書！');
         }
         if (result.data.data.message === 'No') {
           try {
             await BookingService.createBooking(e.target.id);
+            setPrepare(false);
             const checking = window.confirm(
               '購買成功！導覽至作品集(My Book)頁面？'
             );
+
             if (checking) navigate('/my-books');
           } catch (err) {
             setMsg(err.response.data.message);
+            setPrepare(false);
           }
         }
       } catch (err) {
         setMsg(err.response.data.message);
+        setPrepare(false);
       }
     }
   };
@@ -98,26 +107,13 @@ const SearchBook = (props) => {
       </div>
       <br />
       {msg && msg !== 'default' && (
-        <div className='col-4'>
-          <div
-            className='alert alert-warning d-flex align-items-center'
-            role='alert'
-          >
-            <div>{msg}</div>
-          </div>
-        </div>
+        <Warning message={msg} colorType={'warning'} />
       )}
-      {check === 1 && (
-        <div className='d-flex justify-content-center'>
-          <div className='spinner-border' role='status'>
-            <span className='visually-hidden'>Loading...</span>
-          </div>
-        </div>
-      )}
+      {prepare && <Waiting message={'處理中...'} />}
+      {check === 1 && <Loading />}
       {books && books.length !== 0 && check === 2 && (
         <>
           <p className='fw-bold'>搜尋結果：</p>
-
           <div className='row row-cols-1 row-cols-md-3 g-4'>
             {books.map((b) => (
               <div className='col' key={b._id}>

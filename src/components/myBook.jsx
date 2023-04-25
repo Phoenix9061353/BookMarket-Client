@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BookService from '../service/bookService';
 import BookingService from '../service/bookingService';
+import Loading from './通常/Loading';
+import Warning from './通常/Warning';
 
 const MyBookPage = (props) => {
   const { currentUser, book, setBook } = props;
@@ -24,6 +26,10 @@ const MyBookPage = (props) => {
   //handler
   const getBooks = async () => {
     setMsg('');
+    if (!currentUser) {
+      setCheck(2);
+      return setMsg('🚨 請先登入後再拜訪此頁面！🚨');
+    }
     if (currentUser.user.role === 'author') {
       try {
         const result = await BookService.getAuthorBooks();
@@ -54,14 +60,7 @@ const MyBookPage = (props) => {
     const result = books.find((el) => el._id === e.target.id);
     setBook(result);
   };
-  // const deleteBook = async (e) => {
-  //   const check = window.confirm('確定刪除此書？(提醒：執行後無法復原)');
-  //   if (check) {
-  //     await BookService.deleteOneBook(e.target.id);
-  //     window.alert('刪除成功！');
-  //     window.location.reload();
-  //   }
-  // };
+
   //useEffect
   useEffect(() => {
     getBooks();
@@ -70,22 +69,7 @@ const MyBookPage = (props) => {
   //////////////////////////////////////////////////////////////////////////////
   return (
     <div style={{ padding: '3rem' }}>
-      {!currentUser && (
-        <div
-          className='alert alert-danger d-flex justify-content-center'
-          role='alert'
-        >
-          <div className='fw-bold'>🚨 請先登入後再拜訪此頁面！🚨</div>
-        </div>
-      )}
-      {msg && (
-        <div
-          className='alert alert-danger d-flex justify-content-center'
-          role='alert'
-        >
-          <div className='fw-bold'>{msg}</div>
-        </div>
-      )}
+      {msg && <Warning message={msg} colorType={'danger'} />}
       {currentUser && books.length === 0 && check === 2 && (
         <div>
           <h3>尚未擁有書籍！</h3>
@@ -118,13 +102,7 @@ const MyBookPage = (props) => {
           )}
         </div>
       )}
-      {currentUser && check === 0 && (
-        <div className='d-flex justify-content-center'>
-          <div className='spinner-border' role='status'>
-            <span className='visually-hidden'>Loading...</span>
-          </div>
-        </div>
-      )}
+      {currentUser && check === 0 && <Loading />}
       {currentUser && books.length !== 0 && check === 1 && (
         <>
           <h3>{currentUser.user.name.split(' ')[0]}'s Books:</h3>

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReviewService from '../../service/reviewService';
+import Warning from '../通常/Warning';
+import Waiting from '../通常/Waiting';
+
+///////////////////////////////////////////////
 const PostReview = (props) => {
   const { currentUser, book } = props;
   const navigate = useNavigate();
@@ -8,6 +12,7 @@ const PostReview = (props) => {
   let [msg, setMsg] = useState('');
   let [content, setContent] = useState('');
   let [rating, setRating] = useState(4.5);
+  let [prepare, setPrepare] = useState(false);
   //handler
   const handleContent = (e) => {
     setContent(e.target.value.trim());
@@ -18,6 +23,7 @@ const PostReview = (props) => {
 
   const postReview = async (e) => {
     e.preventDefault();
+    setPrepare(true);
     try {
       const result = await ReviewService.createReview(book._id, {
         name: book.name,
@@ -25,6 +31,7 @@ const PostReview = (props) => {
         rating,
       });
       if (result.data.data.message === 'Yes') {
+        setPrepare(false);
         return setMsg(
           '你已經對這本書做過評論！(如需修改相關評論內容請至「My Reviews」頁面)'
         );
@@ -35,6 +42,7 @@ const PostReview = (props) => {
       }
     } catch (err) {
       setMsg(err.response.data.message);
+      setPrepare(false);
     }
   };
   ///////////////////////////////////////////////////////////
@@ -44,28 +52,18 @@ const PostReview = (props) => {
       className='container d-flex justify-content-center'
     >
       {(!currentUser || currentUser.user.role !== 'user') && (
-        <div
-          className='alert alert-danger d-flex justify-content-center'
-          role='alert'
-        >
-          <div className='fw-bold'>
-            🚨 請先以「使用者(user)」身份登入後再拜訪此頁面！🚨
-          </div>
-        </div>
+        <Warning
+          message={'🚨 請先以「使用者(user)」身份登入後再拜訪此頁面！🚨'}
+          colorType={'danger'}
+        />
       )}
       {currentUser && currentUser.user.role === 'user' && (
         <div className='col-md-6'>
           <div className='h-100 p-4 bg-light border rounded-3'>
             <h4>撰寫書評</h4>
             <br />
-            {msg && (
-              <div
-                className='alert alert-danger d-flex align-items-center'
-                role='alert'
-              >
-                {msg}
-              </div>
-            )}
+            {msg && <Warning message={msg} colorType={'danger'} />}
+            {prepare && <Waiting message={'處理中...'} />}
             <form onSubmit={postReview}>
               <div className='mb-3'>
                 <label htmlFor='bookName' className='form-label fw-bold'>
@@ -110,6 +108,7 @@ const PostReview = (props) => {
                   required
                 />
               </div>
+
               <div className='d-md-flex justify-content-md-end'>
                 <button className='btn btn-primary btn--post' type='submit'>
                   提交

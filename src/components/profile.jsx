@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import UserService from '../service/userService';
 import AuthService from '../service/authService';
+import Warning from './通常/Warning';
 
 const ProfilePage = (props) => {
   document.title = 'BookMarket | Profile';
@@ -13,8 +14,8 @@ const ProfilePage = (props) => {
   let [msg, setMsg] = useState('');
   let [msgP, setMsgP] = useState('');
   //form1
-  let [name, setName] = useState(currentUser.user.name);
-  let [email, setEmail] = useState(currentUser.user.email);
+  let [name, setName] = useState(currentUser ? currentUser.user.name : '');
+  let [email, setEmail] = useState(currentUser ? currentUser.user.email : '');
   //form2
   let [oldPass, setOldPass] = useState('');
   let [newPass, setNewPass] = useState('');
@@ -93,12 +94,10 @@ const ProfilePage = (props) => {
   return (
     <div style={{ padding: '3rem' }}>
       {!currentUser && (
-        <div
-          className='alert alert-danger d-flex justify-content-center'
-          role='alert'
-        >
-          <div className='fw-bold'>🚨 請先登入後再拜訪此頁面！🚨</div>
-        </div>
+        <Warning
+          message={'🚨 請先登入後再拜訪此頁面！🚨'}
+          colorType={'danger'}
+        />
       )}
       {currentUser && (
         <>
@@ -108,14 +107,7 @@ const ProfilePage = (props) => {
             <div className='row align-items-md-stretch mt-4'>
               <div className='col-md-6'>
                 <div className='h-100 p-4 bg-light border rounded-3'>
-                  {msg && (
-                    <div
-                      className='alert alert-warning d-flex justify-content-center'
-                      role='alert'
-                    >
-                      <div>{msg}</div>
-                    </div>
-                  )}
+                  {msg && <Warning message={msg} colorType={'warning'} />}
                   <form onSubmit={handleUpdateData}>
                     <div className='mb-3'>
                       <label htmlFor='inputName' className='form-label fw-bold'>
@@ -177,14 +169,7 @@ const ProfilePage = (props) => {
               </div>
               <div className='col-md-6'>
                 <div className='h-100 p-4 border bg-light rounded-3'>
-                  {msgP && (
-                    <div
-                      className='alert alert-warning d-flex justify-content-center'
-                      role='alert'
-                    >
-                      <div>{msgP}</div>
-                    </div>
-                  )}
+                  {msgP && <Warning message={msgP} colorType={'warning'} />}
                   <form onSubmit={handleUpdatePass}>
                     <div className='mb-3'>
                       <label
