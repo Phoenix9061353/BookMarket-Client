@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReviewService from '../../service/reviewService';
-import Loading from '../通常/Loading';
-import Warning from '../通常/Warning';
-import Waiting from '../通常/Waiting';
+import Loading from '../tool/Loading';
+import Warning from '../tool/Warning';
+import Waiting from '../tool/Waiting';
 
 const MyReview = (props) => {
   document.title = 'BookMarket | My Review';

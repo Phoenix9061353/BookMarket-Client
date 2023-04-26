@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import UserService from '../service/userService';
-import AuthService from '../service/authService';
-import Warning from './通常/Warning';
+import UserService from '../../service/userService';
+import AuthService from '../../service/authService';
+import Warning from '../tool/Warning';
 
 const ProfilePage = (props) => {
   document.title = 'BookMarket | Profile';

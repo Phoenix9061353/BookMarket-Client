@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { URL } from './URL';
 
-const API_URL = 'https://bookmarket-server.onrender.com/bookapi/v1/bookings';
+const API_URL = `${URL}/bookings`;
 
 class BookingService {
   createBooking(book_id) {

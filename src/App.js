@@ -9,8 +9,8 @@ import SignupPage from './components/通常/signupPage';
 import LoginPage from './components/通常/loginPage';
 import SearchBook from './components/通常/searchBook';
 
-import ProfilePage from './components/profile';
-import MyBookPage from './components/myBook';
+import ProfilePage from './components/通常/profile';
+import MyBookPage from './components/通常/myBook';
 
 import PostBook from './components/author/postBook';
 import UpdateBook from './components/author/updateBook';
@@ -43,6 +43,7 @@ function App() {
     user: 123456677,
     book: 1234567777,
   });
+
   return (
     <div>
       <NavBar

@@ -1,6 +1,6 @@
 import axios from 'axios';
-
-const API_URL = 'https://bookmarket-server.onrender.com/bookapi/v1/books';
+import { URL } from './URL';
+const API_URL = `${URL}/books`;
 
 class BookService {
   getAuthorBooks() {

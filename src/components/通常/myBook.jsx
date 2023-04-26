@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import BookService from '../service/bookService';
-import BookingService from '../service/bookingService';
-import Loading from './通常/Loading';
-import Warning from './通常/Warning';
+import BookService from '../../service/bookService';
+import BookingService from '../../service/bookingService';
+import Loading from '../tool/Loading';
+import Warning from '../tool/Warning';
 
 const MyBookPage = (props) => {
   const { currentUser, book, setBook } = props;

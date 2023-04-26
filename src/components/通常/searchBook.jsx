@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BookService from '../../service/bookService';
 import BookingService from '../../service/bookingService';
-import Loading from './Loading';
-import Warning from './Warning';
-import Waiting from './Waiting';
+import Loading from '../tool/Loading';
+import Warning from '../tool/Warning';
+import Waiting from '../tool/Waiting';
 
 const SearchBook = (props) => {
   const { currentUser, book, setBook } = props;

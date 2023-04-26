@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReviewService from '../../service/reviewService';
-import Warning from '../通常/Warning';
-import Waiting from '../通常/Waiting';
+import Warning from '../tool/Warning';
+import Waiting from '../tool/Waiting';
 
 ///////////////////////////////////////////////
 const PostReview = (props) => {

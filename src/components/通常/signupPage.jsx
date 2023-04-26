@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../../service/authService';
-import Waiting from './Waiting';
-import Warning from './Warning';
+import Waiting from '../tool/Waiting';
+import Warning from '../tool/Warning';
 
 const SignupPage = (props) => {
   document.title = 'BookMarket | Sign Up';
