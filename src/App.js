@@ -45,7 +45,7 @@ function App() {
   });
 
   return (
-    <div>
+    <>
       <NavBar
         currentUser={currentUser}
         setCurrentUser={setCurrentUser}
@@ -127,7 +127,7 @@ function App() {
           element={<Updatereview currentUser={currentUser} review={review} />}
         />
       </Routes>
-    </div>
+    </>
   );
 }
 
