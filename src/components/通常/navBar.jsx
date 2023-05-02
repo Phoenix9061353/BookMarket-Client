@@ -1,12 +1,16 @@
 /* eslint-disable no-restricted-globals */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AuthService from '../../service/authService';
 const Nav = (props) => {
   const { currentUser, setCurrentUser, setBook } = props;
   let [preLink, setPreLink] = useState(undefined);
   const handleLogout = () => {
-    setPreLink(undefined);
+    document
+      .querySelector('#' + location.hash.slice(2))
+      .classList.remove('active');
+    setPreLink(document.querySelector('#Home'));
+    document.querySelector('#Home').classList.add('active');
     AuthService.logout();
     setCurrentUser(null);
     setBook({
@@ -31,6 +35,21 @@ const Nav = (props) => {
     }
     target.classList.add('active');
   };
+
+  //useEffect
+  useEffect(() => {
+    if (location.hash === '#/') {
+      document.querySelector('#Home').classList.add('active');
+      setPreLink(document.querySelector('#Home'));
+    } else if (document.querySelector('#' + location.hash.slice(2))) {
+      document
+        .querySelector('#' + location.hash.slice(2))
+        .classList.add('active');
+      setPreLink(document.querySelector('#' + location.hash.slice(2)));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  ////////////////////////////////////////
   return (
     <>
       <nav className='navbar navbar-expand-lg navbar-light bg-light sticky-top'>
@@ -51,19 +70,29 @@ const Nav = (props) => {
           <div className='collapse navbar-collapse' id='navbarS'>
             <ul className='nav navbar-nav mr-auto'>
               <li className='nav-item' onClick={handleNav}>
-                <Link className='nav-link' aria-current='page' to='/' id='home'>
+                <Link className='nav-link' aria-current='page' to='/' id='Home'>
                   Home
                 </Link>
               </li>
               {!currentUser && (
                 <>
                   <li className='nav-item' onClick={handleNav}>
-                    <Link className='nav-link' aria-current='page' to='/signup'>
+                    <Link
+                      className='nav-link'
+                      aria-current='page'
+                      to='/signup'
+                      id='signup'
+                    >
                       Sign Up
                     </Link>
                   </li>
                   <li className='nav-item' onClick={handleNav}>
-                    <Link className='nav-link' aria-current='page' to='/login'>
+                    <Link
+                      className='nav-link'
+                      aria-current='page'
+                      to='/login'
+                      id='login'
+                    >
                       Login
                     </Link>
                   </li>
@@ -76,6 +105,7 @@ const Nav = (props) => {
                       className='nav-link'
                       aria-current='page'
                       to='/profile'
+                      id='profile'
                     >
                       Profile
                     </Link>
@@ -85,6 +115,7 @@ const Nav = (props) => {
                       className='nav-link'
                       aria-current='page'
                       to='/my-books'
+                      id='my-books'
                     >
                       My Books
                     </Link>
@@ -98,6 +129,7 @@ const Nav = (props) => {
                       className='nav-link'
                       aria-current='page'
                       to='/post-book'
+                      id='post-book'
                     >
                       Post Book
                     </Link>
@@ -110,13 +142,19 @@ const Nav = (props) => {
                     className='nav-link'
                     aria-current='page'
                     to='/my-reviews'
+                    id='my-reviews'
                   >
                     My Reviews
                   </Link>
                 </li>
               )}
               <li className='nav-item' onClick={handleNav}>
-                <Link className='nav-link' aria-current='page' to='/search'>
+                <Link
+                  className='nav-link'
+                  aria-current='page'
+                  to='/search'
+                  id='search'
+                >
                   Search Book
                 </Link>
               </li>
