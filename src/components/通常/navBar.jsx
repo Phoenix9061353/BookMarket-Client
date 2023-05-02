@@ -38,7 +38,7 @@ const Nav = (props) => {
 
   //useEffect
   useEffect(() => {
-    if (location.hash === '#/') {
+    if (location.hash === '#/' || location.hash === '') {
       document.querySelector('#Home').classList.add('active');
       setPreLink(document.querySelector('#Home'));
     } else if (document.querySelector('#' + location.hash.slice(2))) {
