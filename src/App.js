@@ -43,12 +43,15 @@ function App() {
     user: 123456677,
     book: 1234567777,
   });
+  let [preLink, setPreLink] = useState(undefined);
 
   return (
     <>
       <NavBar
         currentUser={currentUser}
         setCurrentUser={setCurrentUser}
+        preLink={preLink}
+        setPreLink={setPreLink}
         setBook={setBook}
       />
       <Routes>
@@ -61,7 +64,13 @@ function App() {
         <Route
           exact
           path='/login'
-          element={<LoginPage setCurrentUser={setCurrentUser} />}
+          element={
+            <LoginPage
+              setCurrentUser={setCurrentUser}
+              setPreLink={setPreLink}
+              preLink={preLink}
+            />
+          }
         />
         <Route
           exact

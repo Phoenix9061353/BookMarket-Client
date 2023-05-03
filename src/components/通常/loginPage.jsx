@@ -7,7 +7,7 @@ import Warning from '../tool/Warning';
 ///////////////////////////////////////////////////////////
 const LoginPage = (props) => {
   document.title = 'BookMarket | Login';
-  const { setCurrentUser } = props;
+  const { preLink, setCurrentUser, setPreLink } = props;
   const navigate = useNavigate();
 
   //State
@@ -34,6 +34,8 @@ const LoginPage = (props) => {
 
       window.alert('登入成功！按下確定後導向個人檔案頁面...');
       setCheck(false);
+      document.querySelector('#profile').classList.add('active');
+      setPreLink(document.querySelector('#profile'));
       navigate('/profile');
     } catch (err) {
       setMsg(err.response.data.message);
@@ -92,6 +94,9 @@ const LoginPage = (props) => {
             <button
               className='btn btn-primary'
               onClick={() => {
+                preLink.classList.remove('active');
+                document.querySelector('#signup').classList.add('active');
+                setPreLink(document.querySelector('#signup'));
                 navigate('/signup');
               }}
             >

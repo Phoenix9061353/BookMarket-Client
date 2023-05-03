@@ -1,10 +1,10 @@
 /* eslint-disable no-restricted-globals */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AuthService from '../../service/authService';
 const Nav = (props) => {
-  const { currentUser, setCurrentUser, setBook } = props;
-  let [preLink, setPreLink] = useState(undefined);
+  const { currentUser, setCurrentUser, setBook, preLink, setPreLink } = props;
+
   const handleLogout = () => {
     document
       .querySelector('#' + location.hash.slice(2))
