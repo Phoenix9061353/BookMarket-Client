@@ -2,15 +2,18 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AuthService from '../../service/authService';
+import { linkSet } from '../tool/select';
+
+////////////////////////////////////////////////////////
 const Nav = (props) => {
   const { currentUser, setCurrentUser, setBook, preLink, setPreLink } = props;
 
   const handleLogout = () => {
-    document
-      .querySelector('#' + location.hash.slice(2))
-      .classList.remove('active');
-    setPreLink(document.querySelector('#Home'));
-    document.querySelector('#Home').classList.add('active');
+    linkSet(
+      '#Home',
+      setPreLink,
+      document.querySelector('#' + location.hash.slice(2))
+    );
     AuthService.logout();
     setCurrentUser(null);
     setBook({
@@ -39,13 +42,9 @@ const Nav = (props) => {
   //useEffect
   useEffect(() => {
     if (location.hash === '#/' || location.hash === '') {
-      document.querySelector('#Home').classList.add('active');
-      setPreLink(document.querySelector('#Home'));
+      linkSet('#Home', setPreLink);
     } else if (document.querySelector('#' + location.hash.slice(2))) {
-      document
-        .querySelector('#' + location.hash.slice(2))
-        .classList.add('active');
-      setPreLink(document.querySelector('#' + location.hash.slice(2)));
+      linkSet('#' + location.hash.slice(2), setPreLink);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

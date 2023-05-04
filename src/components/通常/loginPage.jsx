@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AuthService from '../../service/authService';
 import Waiting from '../tool/Waiting';
 import Warning from '../tool/Warning';
+import { linkSet } from '../tool/select';
 
 ///////////////////////////////////////////////////////////
 const LoginPage = (props) => {
@@ -34,8 +35,7 @@ const LoginPage = (props) => {
 
       window.alert('登入成功！按下確定後導向個人檔案頁面...');
       setCheck(false);
-      document.querySelector('#profile').classList.add('active');
-      setPreLink(document.querySelector('#profile'));
+      linkSet('#profile', setPreLink);
       navigate('/profile');
     } catch (err) {
       setMsg(err.response.data.message);
@@ -94,9 +94,7 @@ const LoginPage = (props) => {
             <button
               className='btn btn-primary'
               onClick={() => {
-                preLink.classList.remove('active');
-                document.querySelector('#signup').classList.add('active');
-                setPreLink(document.querySelector('#signup'));
+                linkSet('#signup', setPreLink, preLink);
                 navigate('/signup');
               }}
             >

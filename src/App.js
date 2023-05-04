@@ -59,7 +59,13 @@ function App() {
         <Route
           exact
           path='/signup'
-          element={<SignupPage setCurrentUser={setCurrentUser} />}
+          element={
+            <SignupPage
+              setCurrentUser={setCurrentUser}
+              setPreLink={setPreLink}
+              preLink={preLink}
+            />
+          }
         />
         <Route
           exact
@@ -90,6 +96,8 @@ function App() {
               currentUser={currentUser}
               book={book}
               setBook={setBook}
+              preLink={preLink}
+              setPreLink={setPreLink}
             />
           }
         />
@@ -122,6 +130,8 @@ function App() {
               currentUser={currentUser}
               review={review}
               setReview={setReview}
+              preLink={preLink}
+              setPreLink={setPreLink}
             />
           }
         />

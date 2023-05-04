@@ -4,10 +4,11 @@ import ReviewService from '../../service/reviewService';
 import Loading from '../tool/Loading';
 import Warning from '../tool/Warning';
 import Waiting from '../tool/Waiting';
+import { linkSet } from '../tool/select';
 
 const MyReview = (props) => {
   document.title = 'BookMarket | My Review';
-  let { currentUser, review, setReview } = props;
+  let { currentUser, review, setReview, preLink, setPreLink } = props;
   const navigate = useNavigate();
 
   //state
@@ -82,7 +83,10 @@ const MyReview = (props) => {
               前往觀賞書籍並為它評論👉&ensp;
               <button
                 className='btn btn-primary'
-                onClick={() => navigate('/my-books')}
+                onClick={() => {
+                  linkSet('#my-books', setPreLink, preLink);
+                  navigate('/my-books');
+                }}
               >
                 My Books
               </button>

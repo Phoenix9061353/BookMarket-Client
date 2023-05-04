@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import AuthService from '../../service/authService';
 import Waiting from '../tool/Waiting';
 import Warning from '../tool/Warning';
+import { linkSet } from '../tool/select';
 
 const SignupPage = (props) => {
   document.title = 'BookMarket | Sign Up';
-  const { setCurrentUser } = props;
+  const { preLink, setCurrentUser, setPreLink } = props;
   const navigate = useNavigate();
   //state
   let [name, setName] = useState('');
@@ -50,7 +51,10 @@ const SignupPage = (props) => {
       }
       setCurrentUser(AuthService.getCurrentUser());
       setCheck(false);
+
       window.alert('註冊成功！按下確定後導向個人頁面...');
+      preLink.classList.remove('active');
+      linkSet('#profile', setPreLink);
       navigate('/profile');
     } catch (err) {
       setMsg(err.response.data.message);
