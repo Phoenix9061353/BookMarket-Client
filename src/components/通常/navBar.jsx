@@ -9,11 +9,15 @@ const Nav = (props) => {
   const { currentUser, setCurrentUser, setBook, preLink, setPreLink } = props;
 
   const handleLogout = () => {
-    linkSet(
-      '#Home',
-      setPreLink,
-      document.querySelector('#' + location.hash.slice(2))
-    );
+    if (location.hash === '#/') {
+      linkSet('#Home', setPreLink);
+    } else {
+      linkSet(
+        '#Home',
+        setPreLink,
+        document.querySelector('#' + location.hash.slice(2))
+      );
+    }
     AuthService.logout();
     setCurrentUser(null);
     setBook({
