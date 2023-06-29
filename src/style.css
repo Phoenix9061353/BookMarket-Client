@@ -26,3 +26,8 @@
   text-align: center;
   padding: 1.5rem 2rem 1rem 2rem;
 }
+
+.card {
+  max-width: 35rem;
+  min-height: 8rem;
+}

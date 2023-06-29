@@ -117,17 +117,14 @@ const SearchBook = (props) => {
           <div className='row row-cols-1 row-cols-md-3 g-4'>
             {books.map((b) => (
               <div className='col' key={b._id}>
-                <div
-                  className='card'
-                  style={{ width: '25rem', height: '16.5rem' }}
-                >
+                <div className='card'>
                   <div className='card-body overflow-scroll'>
                     <h5 className='card-title'>{b.name}</h5>
                     <p className='card-text'>{b.summary}</p>
                     <p className='className'>作者： {b.author.name}</p>
                     <p className='card-text'>評價： {b.ratingsAverage} / 5</p>
                     <p className='card-text'>價格: {b.price}</p>
-                    <div className='d-grid gap-2 d-md-flex justify-content-md-end'>
+                    <div className='gap-2 d-flex justify-content-end'>
                       <button
                         onClick={getSpeciedBook}
                         id={b._id}
@@ -192,10 +189,7 @@ const SearchBook = (props) => {
                       book.reviews.length > 0 &&
                       book.reviews.map((r) => (
                         <div className='col' key={r._id}>
-                          <div
-                            className='card'
-                            style={{ width: '28rem', height: '12rem' }}
-                          >
+                          <div className='card'>
                             <div className='card-body overflow-scroll'>
                               <p className='card-title'>
                                 讀者： {r.user.name.split(' ')[0]}

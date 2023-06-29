@@ -101,11 +101,11 @@ const MyReview = (props) => {
           <div className='row row-cols-1 row-cols-md-3 g-4'>
             {reviews.map((r) => (
               <div className='col' key={r._id}>
-                <div className='card' style={{ width: '25rem' }}>
+                <div className='card'>
                   <div className='card-body'>
                     <h5 className='card-title'>{r.name}</h5>
                     <p className='card-text'>評價： {r.rating} / 5</p>
-                    <div className='d-grid gap-2 d-md-flex justify-content-md-end'>
+                    <div className='gap-2 d-flex justify-content-end'>
                       <button
                         className='btn btn-danger'
                         onClick={deleteReview}

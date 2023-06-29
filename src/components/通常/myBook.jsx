@@ -113,7 +113,7 @@ const MyBookPage = (props) => {
           <div className='row row-cols-1 row-cols-md-3 g-4'>
             {books.map((b) => (
               <div className='col' key={b._id}>
-                <div className='card' style={{ width: '25rem' }}>
+                <div className='card'>
                   <div className='card-body'>
                     <h5 className='card-title'>{b.name}</h5>
                     <p className='card-text'>{b.summary}</p>
@@ -122,7 +122,7 @@ const MyBookPage = (props) => {
                     )}
                     <p className='card-text'>評價： {b.ratingsAverage} / 5</p>
                     <p className='card-text'>價格： {b.price}</p>
-                    <div className='d-grid gap-2 d-md-flex justify-content-md-end'>
+                    <div className='gap-2 d-flex justify-content-end'>
                       <button
                         onClick={getSpeciedBook}
                         id={b._id}

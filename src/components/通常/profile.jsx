@@ -104,7 +104,7 @@ const ProfilePage = (props) => {
           <div className='container'>
             <h1>Welcome to {currentUser.user.name.split(' ')[0]}'s profile!</h1>
             <br />
-            <div className='row align-items-md-stretch mt-4'>
+            <div className='row g-4 align-items-md-stretch'>
               <div className='col-md-6'>
                 <div className='h-100 p-4 bg-light border rounded-3'>
                   {msg && <Warning message={msg} colorType={'warning'} />}
@@ -154,7 +154,7 @@ const ProfilePage = (props) => {
                         disabled
                       />
                     </div>
-                    <div className='d-md-flex justify-content-md-end'>
+                    <div className='d-flex justify-content-end'>
                       <button
                         type='submit'
                         tabIndex='-1'
@@ -224,7 +224,7 @@ const ProfilePage = (props) => {
                         required
                       />
                     </div>
-                    <div className='d-md-flex justify-content-md-end'>
+                    <div className='d-flex justify-content-end'>
                       <button
                         type='submit'
                         tabIndex='-1'

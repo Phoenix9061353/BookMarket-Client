@@ -106,7 +106,7 @@ const Updatereview = (props) => {
                     required
                   />
                 </div>
-                <div className='d-md-flex justify-content-md-end'>
+                <div className='d-flex justify-content-end'>
                   <button className='btn btn-primary btn--post' type='submit'>
                     修改
                   </button>

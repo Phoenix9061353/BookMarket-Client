@@ -80,7 +80,7 @@ const LoginPage = (props) => {
                 />
               </div>
               <br />
-              <div className='d-md-flex justify-content-md-end'>
+              <div className='d-flex justify-content-end'>
                 <button type='submit' className='btn btn-primary'>
                   登入
                 </button>
@@ -88,18 +88,19 @@ const LoginPage = (props) => {
             </form>
           </div>
         </div>
-        <div className='d-flex pt-4'>
-          <p className='text-md-start fw-normal'>
-            還沒有帳號嗎？來申請一個吧 👉&ensp;
-            <button
-              className='btn btn-primary'
+        <div className='pt-4'>
+          <p className='fw-normal'>
+            還沒有帳號嗎？👉&ensp;
+            <a
+              className='link-underline-primary'
+              href='#/signup'
               onClick={() => {
                 linkSet('#signup', setPreLink, preLink);
                 navigate('/signup');
               }}
             >
               帳號註冊
-            </button>
+            </a>
           </p>
         </div>
       </div>
