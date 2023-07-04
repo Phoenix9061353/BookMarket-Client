@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import BookService from '../../service/bookService';
 import Warning from '../tool/Warning';
 import Waiting from '../tool/Waiting';
+import { linkSet } from '../tool/select';
 
 const PostBook = (props) => {
-  const { currentUser } = props;
+  const { currentUser, preLink, setPreLink } = props;
   const navigate = useNavigate();
   document.title = 'BookMarket | Post Book';
   ////////////////////////////////////////////////////
@@ -52,7 +53,10 @@ const PostBook = (props) => {
       document.querySelector('.btn--post').classList.remove('pe-none');
       setPrepare(false);
       const check = window.confirm('上傳成功！導向作品頁面(My Book)?');
-      if (check) return navigate('/my-books');
+      if (check) {
+        linkSet('#my-books', setPreLink, preLink);
+        navigate('/my-books');
+      }
       if (!check) {
         document
           .querySelectorAll('.form-control')

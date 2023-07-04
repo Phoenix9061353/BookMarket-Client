@@ -104,7 +104,13 @@ function App() {
         <Route
           exact
           path='/post-book'
-          element={<PostBook currentUser={currentUser} />}
+          element={
+            <PostBook
+              currentUser={currentUser}
+              preLink={preLink}
+              setPreLink={setPreLink}
+            />
+          }
         />
         <Route
           exact
@@ -114,6 +120,8 @@ function App() {
               currentUser={currentUser}
               book={book}
               setBook={setBook}
+              preLink={preLink}
+              setPreLink={setPreLink}
             />
           }
         />
@@ -138,7 +146,14 @@ function App() {
         <Route
           exact
           path='/post-review'
-          element={<PostReview currentUser={currentUser} book={book} />}
+          element={
+            <PostReview
+              currentUser={currentUser}
+              book={book}
+              preLink={preLink}
+              setPreLink={setPreLink}
+            />
+          }
         />
         <Route
           exact

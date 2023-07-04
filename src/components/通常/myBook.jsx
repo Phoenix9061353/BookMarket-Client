@@ -120,7 +120,12 @@ const MyBookPage = (props) => {
                     {currentUser.user.role !== 'author' && (
                       <p className='className'>作者： {b.author.name}</p>
                     )}
-                    <p className='card-text'>評價： {b.ratingsAverage} / 5</p>
+                    <p className='card-text'>
+                      評價：{' '}
+                      {b.ratingsAverage === 4.5 && b.ratingsQuantity === 0
+                        ? '尚無評價'
+                        : `${b.ratingsAverage} / 5`}
+                    </p>
                     <p className='card-text'>價格： {b.price}</p>
                     <div className='gap-2 d-flex justify-content-end'>
                       <button

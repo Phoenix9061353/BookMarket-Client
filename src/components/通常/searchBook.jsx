@@ -5,9 +5,10 @@ import BookingService from '../../service/bookingService';
 import Loading from '../tool/Loading';
 import Warning from '../tool/Warning';
 import Waiting from '../tool/Waiting';
+import { linkSet } from '../tool/select';
 
 const SearchBook = (props) => {
-  const { currentUser, book, setBook } = props;
+  const { currentUser, book, setBook, preLink, setPreLink } = props;
   document.title = 'BookMarket | Search';
   const navigate = useNavigate();
   let arrD = [];
@@ -44,7 +45,10 @@ const SearchBook = (props) => {
               '購買成功！導覽至作品集(My Book)頁面？'
             );
 
-            if (checking) navigate('/my-books');
+            if (checking) {
+              linkSet('#my-books', setPreLink, preLink);
+              navigate('/my-books');
+            }
           } catch (err) {
             setMsg(err.response.data.message);
             setPrepare(false);
@@ -122,7 +126,12 @@ const SearchBook = (props) => {
                     <h5 className='card-title'>{b.name}</h5>
                     <p className='card-text'>{b.summary}</p>
                     <p className='className'>作者： {b.author.name}</p>
-                    <p className='card-text'>評價： {b.ratingsAverage} / 5</p>
+                    <p className='card-text'>
+                      評價：{' '}
+                      {b.ratingsAverage === 4.5 && b.ratingsQuantity === 0
+                        ? '尚無評價'
+                        : `${b.ratingsAverage} / 5`}
+                    </p>
                     <p className='card-text'>價格: {b.price}</p>
                     <div className='gap-2 d-flex justify-content-end'>
                       <button
