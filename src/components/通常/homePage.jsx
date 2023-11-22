@@ -66,7 +66,7 @@ const homePage = () => {
         </div>
 
         <footer className='pt-3 mt-4 text-muted border-top'>
-          &copy; 2022 Phoenix Chang
+          &copy; 2023 Phoenix Chang
         </footer>
       </div>
       <div
