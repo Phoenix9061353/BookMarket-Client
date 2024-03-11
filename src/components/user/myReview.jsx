@@ -5,9 +5,10 @@ import Loading from '../tool/Loading';
 import Warning from '../tool/Warning';
 import Waiting from '../tool/Waiting';
 import { linkSet } from '../tool/select';
+import { ChangeTitle } from '../tool/ChangeTitle';
 
 const MyReview = (props) => {
-  document.title = 'BookMarket | My Review';
+  ChangeTitle('My Review');
   let { currentUser, review, setReview, preLink, setPreLink } = props;
   const navigate = useNavigate();
 
