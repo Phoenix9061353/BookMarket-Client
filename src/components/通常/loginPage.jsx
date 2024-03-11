@@ -4,10 +4,11 @@ import AuthService from '../../service/authService';
 import Waiting from '../tool/Waiting';
 import Warning from '../tool/Warning';
 import { linkSet } from '../tool/select';
+import { ChangeTitle } from '../tool/ChangeTitle';
 
 ///////////////////////////////////////////////////////////
 const LoginPage = (props) => {
-  document.title = 'BookMarket | Login';
+  ChangeTitle('Login');
   const { preLink, setCurrentUser, setPreLink } = props;
   const navigate = useNavigate();
 

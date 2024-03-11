@@ -5,11 +5,12 @@ import BookingService from '../../service/bookingService';
 import Loading from '../tool/Loading';
 import Warning from '../tool/Warning';
 import { linkSet } from '../tool/select';
+import { ChangeTitle } from '../tool/ChangeTitle';
 
 const MyBookPage = (props) => {
   const { currentUser, book, setBook, preLink, setPreLink } = props;
   const navigate = useNavigate();
-  document.title = 'BookMarket | My Book';
+  ChangeTitle('My Book');
 
   let arrD = [];
   if (book.description.includes('\n')) {

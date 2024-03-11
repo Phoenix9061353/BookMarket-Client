@@ -1,7 +1,8 @@
 import React from 'react';
+import { ChangeTitle } from '../tool/ChangeTitle';
 
 const homePage = () => {
-  document.title = 'BookMarket | Home';
+  ChangeTitle('Home');
   return (
     <main>
       <div className='container py-4'>

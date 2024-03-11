@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import UserService from '../../service/userService';
 import AuthService from '../../service/authService';
 import Warning from '../tool/Warning';
+import { ChangeTitle } from '../tool/ChangeTitle';
 
 const ProfilePage = (props) => {
-  document.title = 'BookMarket | Profile';
+  ChangeTitle('Profile');
   const { currentUser, setCurrentUser } = props;
   const btnUpdateData = document.querySelector('.btn--updateData');
   const btnUpdatePass = document.querySelector('.btn--updatePass');

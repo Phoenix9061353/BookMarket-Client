@@ -6,10 +6,11 @@ import Loading from '../tool/Loading';
 import Warning from '../tool/Warning';
 import Waiting from '../tool/Waiting';
 import { linkSet } from '../tool/select';
+import { ChangeTitle } from '../tool/ChangeTitle';
 
 const SearchBook = (props) => {
   const { currentUser, book, setBook, preLink, setPreLink } = props;
-  document.title = 'BookMarket | Search';
+  ChangeTitle('Search');
   const navigate = useNavigate();
   let arrD = [];
   if (book.description.includes('\n')) {
