@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BookService from '../../service/bookService';
 import Warning from '../tool/Warning';
@@ -9,6 +9,13 @@ import { ChangeTitle } from '../tool/ChangeTitle';
 const PostBook = (props) => {
   const { currentUser, preLink, setPreLink } = props;
   const navigate = useNavigate();
+
+  //Ref
+  const postButton = useRef();
+  const priceInput = useRef();
+  const typeSelect = useRef();
+
+  //custom hook
   ChangeTitle('Post Book');
   ////////////////////////////////////////////////////
   //state
@@ -40,8 +47,9 @@ const PostBook = (props) => {
     e.preventDefault();
     setMsg('');
     setPrepare(true);
-    document.querySelector('.btn--post').textContent = '處理中...';
-    document.querySelector('.btn--post').classList.add('pe-none');
+
+    postButton.current.textContent = '處理中';
+    postButton.current.classList.add('pe-none');
     try {
       await BookService.createOneBook({
         name,
@@ -50,8 +58,8 @@ const PostBook = (props) => {
         price,
         type,
       });
-      document.querySelector('.btn--post').textContent = 'Post';
-      document.querySelector('.btn--post').classList.remove('pe-none');
+      postButton.current.textContent = 'Post';
+      postButton.current.classList.remove('pe-none');
       setPrepare(false);
       const check = window.confirm('上傳成功！導向作品頁面(My Book)?');
       if (check) {
@@ -62,8 +70,8 @@ const PostBook = (props) => {
         document
           .querySelectorAll('.form-control')
           .forEach((el) => (el.value = ''));
-        document.querySelector('#inputPrice').value = 0;
-        document.querySelector('#selectType').value = '日常';
+        priceInput.current.value = 0;
+        typeSelect.current.value = '日常';
         setName('');
         setSummary('');
         setDescription('');
@@ -84,7 +92,7 @@ const PostBook = (props) => {
         />
       )}
       {msg && <Warning message={msg} colorType={'warning'} />}
-      {prepare && <Waiting message={'處理中...'} />}
+      {prepare && <Waiting message={'處理中...（請勿離開當前頁面）'} />}
       {currentUser && currentUser.user.role === 'author' && (
         <form onSubmit={postBook}>
           <div className='mb-3'>
@@ -147,6 +155,7 @@ const PostBook = (props) => {
               min={0}
               max={9999}
               defaultValue={0}
+              ref={priceInput}
               required
             />
           </div>
@@ -159,6 +168,7 @@ const PostBook = (props) => {
               onChange={handleT}
               className='form-select'
               defaultValue={'日常'}
+              ref={typeSelect}
             >
               <option value='懸疑'>懸疑</option>
               <option value='科幻'>科幻</option>
@@ -169,7 +179,11 @@ const PostBook = (props) => {
             </select>
           </div>
           <div className='d-md-flex justify-content-md-end'>
-            <button className='btn btn-primary btn--post' type='submit'>
+            <button
+              className='btn btn-primary btn--post'
+              type='submit'
+              ref={postButton}
+            >
               Post
             </button>
           </div>

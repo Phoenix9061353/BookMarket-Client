@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import UserService from '../../service/userService';
 import AuthService from '../../service/authService';
 import Warning from '../tool/Warning';
@@ -7,8 +7,14 @@ import { ChangeTitle } from '../tool/ChangeTitle';
 const ProfilePage = (props) => {
   ChangeTitle('Profile');
   const { currentUser, setCurrentUser } = props;
-  const btnUpdateData = document.querySelector('.btn--updateData');
-  const btnUpdatePass = document.querySelector('.btn--updatePass');
+
+  //Ref
+  const updateDataButton = useRef();
+  const updatePassButton = useRef();
+  const inputOldPass = useRef();
+  const inputNewPass = useRef();
+  const inputNewPassConfirm = useRef();
+
   ////////////////////////////////////////////////////////////////
   //state
   //msg
@@ -32,8 +38,8 @@ const ProfilePage = (props) => {
   };
   const handleUpdateData = async (e) => {
     e.preventDefault();
-    btnUpdateData.classList.add('pe-none');
-    btnUpdateData.textContent = '處理中...';
+    updateDataButton.current.classList.add('pe-none');
+    updateDataButton.current.textContent = '處理中...';
     setMsg('');
     try {
       const result = await UserService.updateUserData(currentUser.user._id, {
@@ -44,13 +50,13 @@ const ProfilePage = (props) => {
         localStorage.setItem('user', JSON.stringify(result.data.data));
       }
       setCurrentUser(AuthService.getCurrentUser());
-      btnUpdateData.classList.remove('pe-none');
-      btnUpdateData.textContent = '修改';
+      updateDataButton.current.classList.remove('pe-none');
+      updateDataButton.current.textContent = '修改';
       window.alert('資料修改成功！');
     } catch (err) {
       setMsg(err.response.data.message);
-      btnUpdateData.classList.remove('pe-none');
-      btnUpdateData.textContent = '修改';
+      updateDataButton.current.classList.remove('pe-none');
+      updateDataButton.current.textContent = '修改';
     }
   };
 
@@ -66,8 +72,8 @@ const ProfilePage = (props) => {
   };
   const handleUpdatePass = async (e) => {
     e.preventDefault();
-    btnUpdatePass.classList.add('pe-none');
-    btnUpdatePass.textContent = '處理中...';
+    updatePassButton.current.classList.add('pe-none');
+    updatePassButton.current.textContent = '處理中...';
     setMsgP('');
     try {
       const result = await UserService.updateUserPassword({
@@ -79,15 +85,15 @@ const ProfilePage = (props) => {
         localStorage.setItem('user', JSON.stringify(result.data.data));
       }
       setCurrentUser(AuthService.getCurrentUser());
-      document.querySelector('#inputOldPass').value = '';
-      document.querySelector('#inputNewPass').value = '';
-      document.querySelector('#inputNewPassConfirm').value = '';
-      btnUpdatePass.textContent = '修改';
-      btnUpdatePass.classList.remove('pe-none');
+      inputOldPass.current.value = '';
+      inputNewPass.current.value = '';
+      inputNewPassConfirm.current.value = '';
+      updatePassButton.current.textContent = '修改';
+      updatePassButton.current.classList.remove('pe-none');
       window.alert('密碼更改成功！');
     } catch (err) {
-      btnUpdatePass.textContent = '修改';
-      btnUpdatePass.classList.remove('pe-none');
+      updatePassButton.current.textContent = '修改';
+      updatePassButton.current.classList.remove('pe-none');
       setMsgP(err.response.data.message);
     }
   };
@@ -161,6 +167,7 @@ const ProfilePage = (props) => {
                         tabIndex='-1'
                         aria-disabled='true'
                         className='btn btn-primary btn--updateData'
+                        ref={updateDataButton}
                       >
                         修改
                       </button>
@@ -185,6 +192,7 @@ const ProfilePage = (props) => {
                         id='inputOldPass'
                         className='form-control'
                         placeholder='••••••••'
+                        ref={inputOldPass}
                         required
                       />
                     </div>
@@ -203,6 +211,7 @@ const ProfilePage = (props) => {
                         placeholder='••••••••'
                         aria-describedby='passHelp'
                         minLength={8}
+                        ref={inputNewPass}
                         required
                       />
                       <div id='passHelp' className='form-text'>
@@ -222,6 +231,7 @@ const ProfilePage = (props) => {
                         id='inputNewPassConfirm'
                         className='form-control'
                         placeholder='••••••••'
+                        ref={inputNewPassConfirm}
                         required
                       />
                     </div>
@@ -231,6 +241,7 @@ const ProfilePage = (props) => {
                         tabIndex='-1'
                         aria-disabled='true'
                         className='btn btn-primary btn--updatePass'
+                        ref={updatePassButton}
                       >
                         修改
                       </button>

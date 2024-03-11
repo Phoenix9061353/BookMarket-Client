@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BookService from '../../service/bookService';
 import Waiting from '../tool/Waiting';
@@ -9,6 +9,9 @@ import Warning from '../tool/Warning';
 const UpdateBook = (props) => {
   const { currentUser, book } = props;
   const navigate = useNavigate();
+
+  //Ref
+  const postButton = useRef();
   ///////////////////////////////////////////
   //state
   let [msg, setMsg] = useState('');
@@ -38,8 +41,8 @@ const UpdateBook = (props) => {
   const updateOneBook = async (e) => {
     e.preventDefault();
     setPrepare(true);
-    document.querySelector('.btn--post').textContent = '處理中...';
-    document.querySelector('.btn--post').classList.add('pe-none');
+    postButton.current.textContent = '處理中...';
+    postButton.current.classList.add('pe-none');
 
     try {
       await BookService.updateBook(e.target.id, {
@@ -49,8 +52,8 @@ const UpdateBook = (props) => {
         price,
         type,
       });
-      document.querySelector('.btn--post').classList.remove('pe-none');
-      document.querySelector('.btn--post').textContent = 'Update';
+      postButton.current.classList.remove('pe-none');
+      postButton.current.textContent = 'Update';
       setPrepare(false);
       window.alert('修改成功！按下確定後導回作品集頁面(My Book)...');
       navigate('/my-books');
@@ -167,7 +170,11 @@ const UpdateBook = (props) => {
                   </select>
                 </div>
                 <div className='d-md-flex justify-content-md-end'>
-                  <button className='btn btn-primary btn--post' type='submit'>
+                  <button
+                    className='btn btn-primary btn--post'
+                    type='submit'
+                    ref={postButton}
+                  >
                     Update
                   </button>
                 </div>
