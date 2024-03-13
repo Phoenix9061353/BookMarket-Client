@@ -13,6 +13,9 @@ const PostBook = (props) => {
   //Ref
   const postButton = useRef();
   const priceInput = useRef();
+  const nameInput = useRef();
+  const summaryInput = useRef();
+  const descriptionInput = useRef();
   const typeSelect = useRef();
 
   //custom hook
@@ -67,9 +70,9 @@ const PostBook = (props) => {
         navigate('/my-books');
       }
       if (!check) {
-        document
-          .querySelectorAll('.form-control')
-          .forEach((el) => (el.value = ''));
+        nameInput.current.value = '';
+        summaryInput.current.value = '';
+        descriptionInput.current.value = '';
         priceInput.current.value = 0;
         typeSelect.current.value = '日常';
         setName('');
@@ -106,6 +109,7 @@ const PostBook = (props) => {
               className='form-control'
               minLength={3}
               aria-describedby='nameHelp'
+              ref={nameInput}
               required
             />
             <div className='form-text'>
@@ -123,6 +127,7 @@ const PostBook = (props) => {
               id='inputSummary'
               maxLength={30}
               aria-describedby='summaryHelp'
+              ref={summaryInput}
               required
             />
             <div className='form-text'>
@@ -139,6 +144,7 @@ const PostBook = (props) => {
               className='form-control'
               id='inputDescription'
               aria-describedby='descriptionHelp'
+              ref={descriptionInput}
             />
             <div className='form-text'>
               若有需要，可在此對書籍內容做更近一步的介紹（選填）
