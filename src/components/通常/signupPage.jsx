@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import AuthService from '../../service/authService';
 import Waiting from '../tool/Waiting';
 import Warning from '../tool/Warning';
@@ -9,42 +10,23 @@ import { ChangeTitle } from '../tool/ChangeTitle';
 const SignupPage = (props) => {
   ChangeTitle('Sign Up');
   const { preLink, setCurrentUser, setPreLink } = props;
+  const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
   //state
-  let [name, setName] = useState('');
-  let [email, setEmail] = useState('');
-  let [pass, setPass] = useState('');
-  let [passC, setPassC] = useState('');
-  let [role, setRole] = useState('user');
   let [msg, setMsg] = useState('');
   let [check, setCheck] = useState(false);
-  //handler
-  const handleN = (e) => {
-    setName(e.target.value.trim());
-  };
-  const handleE = (e) => {
-    setEmail(e.target.value);
-  };
-  const handleP = (e) => {
-    setPass(e.target.value);
-  };
-  const handlePC = (e) => {
-    setPassC(e.target.value);
-  };
-  const handleR = (e) => {
-    setRole(e.target.value);
-  };
 
-  const handleSignUp = async (e) => {
-    e.preventDefault();
+  //handler
+  const handleSignUp = async (inputData) => {
+    const { name, email, password, passwordConfirm, role } = inputData;
     setMsg('');
     setCheck(true);
     try {
       const data = await AuthService.signup({
         name,
         email,
-        password: pass,
-        passwordConfirm: passC,
+        password,
+        passwordConfirm,
         role,
       });
       if (data.data.data.token) {
@@ -52,7 +34,6 @@ const SignupPage = (props) => {
       }
       setCurrentUser(AuthService.getCurrentUser());
       setCheck(false);
-
       window.alert('註冊成功！按下確定後導向個人頁面...');
       preLink.classList.remove('active');
       linkSet('#profile', setPreLink);
@@ -71,14 +52,19 @@ const SignupPage = (props) => {
       {check && <Waiting message={'處理中...'} />}
       <div className='row align-items-md-stretch'>
         <div className='col-md-6 p-4 bg-light rounded-3'>
-          <form onSubmit={handleSignUp}>
+          <form
+            onSubmit={handleSubmit((data) => {
+              handleSignUp(data);
+              reset();
+            })}
+          >
             <div className='mb-3'>
               <label htmlFor='inputName' className='form-label'>
                 User name
               </label>
               <input
                 type='text'
-                onChange={handleN}
+                {...register('name')}
                 id='inputName'
                 aria-describedby='nameHelp'
                 className='form-control'
@@ -95,7 +81,7 @@ const SignupPage = (props) => {
               </label>
               <input
                 type='email'
-                onChange={handleE}
+                {...register('email')}
                 id='inputEmail'
                 className='form-control'
                 placeholder='you@example.com'
@@ -108,7 +94,7 @@ const SignupPage = (props) => {
               </label>
               <input
                 type='password'
-                onChange={handleP}
+                {...register('password')}
                 id='inputPassword'
                 className='form-control'
                 aria-describedby='passHelp'
@@ -126,7 +112,7 @@ const SignupPage = (props) => {
               </label>
               <input
                 type='password'
-                onChange={handlePC}
+                {...register('passwordConfirm')}
                 id='inputPasswordConfirm'
                 className='form-control'
                 placeholder='••••••••'
@@ -138,10 +124,11 @@ const SignupPage = (props) => {
                 Role
               </label>
               <select
-                onChange={handleR}
+                {...register('role')}
                 id='inputRole'
                 className='form-select'
                 defaultValue='user'
+                required
               >
                 <option value='user'>user</option>
                 <option value='author'>author</option>

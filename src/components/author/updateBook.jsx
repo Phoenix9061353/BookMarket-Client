@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import BookService from '../../service/bookService';
 import Waiting from '../tool/Waiting';
 import Warning from '../tool/Warning';
@@ -9,43 +10,24 @@ import Warning from '../tool/Warning';
 const UpdateBook = (props) => {
   const { currentUser, book } = props;
   const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
 
   //Ref
   const postButton = useRef();
   ///////////////////////////////////////////
   //state
   let [msg, setMsg] = useState('');
-  let [name, setName] = useState(book.name);
-  let [summary, setSummary] = useState(book.summary);
-  let [description, setDescription] = useState(book.description);
-  let [price, setPrice] = useState(book.price);
-  let [type, setType] = useState(book.type);
   let [prepare, setPrepare] = useState(false);
-  //handler
-  const handleN = (e) => {
-    setName(e.target.value.trim());
-  };
-  const handleS = (e) => {
-    setSummary(e.target.value.trim());
-  };
-  const handleD = (e) => {
-    setDescription(e.target.value.trim());
-  };
-  const handleP = (e) => {
-    setPrice(e.target.value);
-  };
-  const handleT = (e) => {
-    setType(e.target.value);
-  };
+
   //handleUpdate
-  const updateOneBook = async (e) => {
-    e.preventDefault();
+  const updateOneBook = async (inputData) => {
+    const { name, summary, description, price, type } = inputData;
     setPrepare(true);
     postButton.current.textContent = '處理中...';
     postButton.current.classList.add('pe-none');
 
     try {
-      await BookService.updateBook(e.target.id, {
+      await BookService.updateBook(book._id, {
         name,
         summary,
         description,
@@ -83,14 +65,17 @@ const UpdateBook = (props) => {
           <div className='col-md-6'>
             <div className='h-100 p-4 bg-light border rounded-3'>
               {msg && <Warning message={msg} colorType={'danger'} />}
-              <form id={book._id} onSubmit={updateOneBook}>
+              <form
+                id={book._id}
+                onSubmit={handleSubmit((data) => updateOneBook(data))}
+              >
                 <div className='mb-3'>
                   <label htmlFor='inputName' className='form-label fw-bold'>
                     書名
                   </label>
                   <input
                     type='text'
-                    onChange={handleN}
+                    {...register('name')}
                     id='inputName'
                     className='form-control'
                     aria-describedby='nameHelp'
@@ -108,7 +93,7 @@ const UpdateBook = (props) => {
                   <input
                     type='text'
                     id='inputSummary'
-                    onChange={handleS}
+                    {...register('summary')}
                     aria-describedby='summaryHelp'
                     className='form-control'
                     defaultValue={book.summary}
@@ -127,7 +112,7 @@ const UpdateBook = (props) => {
                   </label>
                   <textarea
                     type='text'
-                    onChange={handleD}
+                    {...register('description')}
                     className='form-control'
                     id='inputDescription'
                     aria-describedby='descriptionHelp'
@@ -143,7 +128,7 @@ const UpdateBook = (props) => {
                   </label>
                   <input
                     id='inputPrice'
-                    onChange={handleP}
+                    {...register('price')}
                     type='number'
                     min={0}
                     max={9999}
@@ -157,7 +142,7 @@ const UpdateBook = (props) => {
                   </label>
                   <select
                     id='selectType'
-                    onChange={handleT}
+                    {...register('type')}
                     className='form-select'
                     defaultValue={book.type}
                   >

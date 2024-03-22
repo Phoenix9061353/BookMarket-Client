@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import BookService from '../../service/bookService';
 import Warning from '../tool/Warning';
 import Waiting from '../tool/Waiting';
@@ -9,45 +10,21 @@ import { ChangeTitle } from '../tool/ChangeTitle';
 const PostBook = (props) => {
   const { currentUser, preLink, setPreLink } = props;
   const navigate = useNavigate();
+  const { register, handleSubmit, reset } = useForm();
 
   //Ref
   const postButton = useRef();
-  const priceInput = useRef();
-  const nameInput = useRef();
-  const summaryInput = useRef();
-  const descriptionInput = useRef();
-  const typeSelect = useRef();
 
   //custom hook
   ChangeTitle('Post Book');
   ////////////////////////////////////////////////////
   //state
   let [msg, setMsg] = useState('');
-  let [name, setName] = useState('');
-  let [summary, setSummary] = useState('');
-  let [description, setDescription] = useState('');
-  let [price, setPrice] = useState(0);
-  let [type, setType] = useState('日常');
   let [prepare, setPrepare] = useState(false);
-  //handler
-  const handleN = (e) => {
-    setName(e.target.value.trim());
-  };
-  const handleS = (e) => {
-    setSummary(e.target.value.trim());
-  };
-  const handleD = (e) => {
-    setDescription(e.target.value.trim());
-  };
-  const handleP = (e) => {
-    setPrice(e.target.value);
-  };
-  const handleT = (e) => {
-    setType(e.target.value);
-  };
+
   //handlePost
-  const postBook = async (e) => {
-    e.preventDefault();
+  const postBook = async (inputData) => {
+    const { name, summary, description, price, type } = inputData;
     setMsg('');
     setPrepare(true);
 
@@ -69,17 +46,6 @@ const PostBook = (props) => {
         linkSet('#my-books', setPreLink, preLink);
         navigate('/my-books');
       }
-      if (!check) {
-        nameInput.current.value = '';
-        summaryInput.current.value = '';
-        descriptionInput.current.value = '';
-        priceInput.current.value = 0;
-        typeSelect.current.value = '日常';
-        setName('');
-        setSummary('');
-        setDescription('');
-        setPrice(0);
-      }
     } catch (err) {
       setMsg(err.response.data.message);
       setPrepare(false);
@@ -97,7 +63,12 @@ const PostBook = (props) => {
       {msg && <Warning message={msg} colorType={'warning'} />}
       {prepare && <Waiting message={'處理中...（請勿離開當前頁面）'} />}
       {currentUser && currentUser.user.role === 'author' && (
-        <form onSubmit={postBook}>
+        <form
+          onSubmit={handleSubmit((data) => {
+            postBook(data);
+            reset();
+          })}
+        >
           <div className='mb-3'>
             <label htmlFor='inputName' className='form-label fw-bold'>
               書名
@@ -105,11 +76,10 @@ const PostBook = (props) => {
             <input
               type='text'
               id='inputName'
-              onChange={handleN}
+              {...register('name')}
               className='form-control'
               minLength={3}
               aria-describedby='nameHelp'
-              ref={nameInput}
               required
             />
             <div className='form-text'>
@@ -123,11 +93,10 @@ const PostBook = (props) => {
             <input
               type='text'
               className='form-control'
-              onChange={handleS}
+              {...register('summary')}
               id='inputSummary'
               maxLength={30}
               aria-describedby='summaryHelp'
-              ref={summaryInput}
               required
             />
             <div className='form-text'>
@@ -140,11 +109,10 @@ const PostBook = (props) => {
             </label>
             <textarea
               type='text'
-              onChange={handleD}
+              {...register('description')}
               className='form-control'
               id='inputDescription'
               aria-describedby='descriptionHelp'
-              ref={descriptionInput}
             />
             <div className='form-text'>
               若有需要，可在此對書籍內容做更近一步的介紹（選填）
@@ -157,11 +125,10 @@ const PostBook = (props) => {
             <input
               id='inputPrice'
               type='number'
-              onChange={handleP}
+              {...register('price')}
               min={0}
               max={9999}
               defaultValue={0}
-              ref={priceInput}
               required
             />
           </div>
@@ -171,10 +138,9 @@ const PostBook = (props) => {
             </label>
             <select
               id='selectType'
-              onChange={handleT}
+              {...register('type')}
               className='form-select'
               defaultValue={'日常'}
-              ref={typeSelect}
             >
               <option value='懸疑'>懸疑</option>
               <option value='科幻'>科幻</option>

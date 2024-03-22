@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import AuthService from '../../service/authService';
 import Waiting from '../tool/Waiting';
 import Warning from '../tool/Warning';
@@ -11,24 +12,17 @@ const LoginPage = (props) => {
   ChangeTitle('Login');
   const { preLink, setCurrentUser, setPreLink } = props;
   const navigate = useNavigate();
+  const { register, handleSubmit, reset } = useForm();
 
   //State
-  let [email, setEmail] = useState('');
-  let [pass, setPass] = useState('');
   let [msg, setMsg] = useState('');
   let [check, setCheck] = useState(false);
+
   //Handler
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-  };
-  const handlePassword = (e) => {
-    setPass(e.target.value);
-  };
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (data) => {
     setCheck(true);
     try {
-      const user = await AuthService.login(email, pass);
+      const user = await AuthService.login(data.email, data.password);
       if (user.data.data.token) {
         localStorage.setItem('user', JSON.stringify(user.data.data));
       }
@@ -53,18 +47,22 @@ const LoginPage = (props) => {
       <div className='container pt-3'>
         <div className='col-md-4'>
           <div className='h-100 p-4 bg-light border rounded-3'>
-            <form onSubmit={handleLogin}>
+            <form
+              onSubmit={handleSubmit((data) => {
+                handleLogin(data);
+                reset();
+              })}
+            >
               <div className='mb-3'>
                 <label htmlFor='inputEmail' className='form-label'>
                   Email address
                 </label>
                 <input
+                  {...register('email', { required: true })}
                   type='email'
-                  onChange={handleEmail}
                   id='inputEmail'
                   className='form-control'
                   placeholder='you@example.com'
-                  required
                 />
               </div>
               <div className='mb-3'>
@@ -73,11 +71,10 @@ const LoginPage = (props) => {
                 </label>
                 <input
                   type='password'
-                  onChange={handlePassword}
+                  {...register('password', { required: true })}
                   id='inputPassword'
                   className='form-control'
                   placeholder='••••••••'
-                  required
                 />
               </div>
               <br />
