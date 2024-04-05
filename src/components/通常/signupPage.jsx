@@ -143,7 +143,7 @@ const SignupPage = (props) => {
         </div>
         <div className='col-md-6'>
           <img
-            src={require('../../img/flower_butterfly.png')}
+            src='flower_butterfly.png'
             alt='Book'
             width='75%'
             height='70%'
