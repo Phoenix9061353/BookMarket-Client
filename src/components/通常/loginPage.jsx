@@ -4,16 +4,12 @@ import { useForm } from 'react-hook-form';
 import AuthService from '../../service/authService';
 import Waiting from '../tool/Waiting';
 import Warning from '../tool/Warning';
-// import { linkSet } from '../tool/select';
 import { ChangeTitle } from '../tool/ChangeTitle';
 
 ///////////////////////////////////////////////////////////
 const LoginPage = (props) => {
   ChangeTitle('Login');
-
-  // const { preLink, setCurrentUser, setPreLink } = props;
   const { setCurrentUser } = props;
-
   const navigate = useNavigate();
   const { register, handleSubmit, reset } = useForm();
 
@@ -33,13 +29,11 @@ const LoginPage = (props) => {
 
       window.alert('登入成功！按下確定後導向個人檔案頁面...');
       setCheck(false);
-      // linkSet('#profile', setPreLink);
       navigate('/profile');
     } catch (err) {
       if (err) {
         console.log(err);
         setMsg(err.response.data.message);
-
         setCheck(false);
       }
     }
@@ -100,7 +94,6 @@ const LoginPage = (props) => {
               className='link-underline-primary'
               href='#/signup'
               onClick={() => {
-                // linkSet('#signup', setPreLink, preLink);
                 navigate('/signup');
               }}
             >

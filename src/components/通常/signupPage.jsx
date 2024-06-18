@@ -4,12 +4,10 @@ import { useForm } from 'react-hook-form';
 import AuthService from '../../service/authService';
 import Waiting from '../tool/Waiting';
 import Warning from '../tool/Warning';
-// import { linkSet } from '../tool/select';
 import { ChangeTitle } from '../tool/ChangeTitle';
 
 const SignupPage = (props) => {
   ChangeTitle('Sign Up');
-  // const { preLink, setCurrentUser, setPreLink } = props;
   const { preLink, setCurrentUser } = props;
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
@@ -38,7 +36,6 @@ const SignupPage = (props) => {
       setCheck(false);
       window.alert('註冊成功！按下確定後導向個人頁面...');
       preLink.classList.remove('active');
-      // linkSet('#profile', setPreLink);
       navigate('/profile');
     } catch (err) {
       setMsg(err.response.data.message);

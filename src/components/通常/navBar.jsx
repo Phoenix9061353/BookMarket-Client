@@ -1,24 +1,13 @@
 /* eslint-disable no-restricted-globals */
-// import React, { useEffect } from 'react';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import AuthService from '../../service/authService';
-// import { linkSet } from '../tool/select';
 
 ////////////////////////////////////////////////////////
 const Nav = (props) => {
-  const { currentUser, setCurrentUser, setBook, preLink, setPreLink } = props;
+  const { currentUser, setCurrentUser, setBook } = props;
 
   const handleLogout = () => {
-    // if (location.hash === '#/') {
-    //   linkSet('#Home', setPreLink);
-    // } else {
-    //   linkSet(
-    //     '#Home',
-    //     setPreLink,
-    //     document.querySelector('#' + location.hash.slice(2))
-    //   );
-    // }
     AuthService.logout();
     setCurrentUser(null);
     setBook({
@@ -34,25 +23,6 @@ const Nav = (props) => {
     });
   };
 
-  const handleNav = (e) => {
-    let target = e.target.closest('.nav-link');
-
-    setPreLink(target);
-    if (preLink) {
-      preLink.classList.remove('active');
-    }
-    target.classList.add('active');
-  };
-
-  //useEffect
-  // useEffect(() => {
-  //   if (location.hash === '#/' || location.hash === '') {
-  //     linkSet('#Home', setPreLink);
-  //   } else if (document.querySelector('#' + location.hash.slice(2))) {
-  //     linkSet('#' + location.hash.slice(2), setPreLink);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
   ////////////////////////////////////////
   return (
     <>
@@ -73,94 +43,99 @@ const Nav = (props) => {
           </button>
           <div className='collapse navbar-collapse' id='navbarS'>
             <ul className='nav navbar-nav mr-auto'>
-              <li className='nav-item' onClick={handleNav}>
-                <Link className='nav-link' aria-current='page' to='/' id='Home'>
+              <li className='nav-item'>
+                <NavLink
+                  className='nav-link'
+                  aria-current='page'
+                  to='/'
+                  id='Home'
+                >
                   Home
-                </Link>
+                </NavLink>
               </li>
               {!currentUser && (
                 <>
-                  <li className='nav-item' onClick={handleNav}>
-                    <Link
+                  <li className='nav-item'>
+                    <NavLink
                       className='nav-link'
                       aria-current='page'
                       to='/signup'
                       id='signup'
                     >
                       Sign Up
-                    </Link>
+                    </NavLink>
                   </li>
-                  <li className='nav-item' onClick={handleNav}>
-                    <Link
+                  <li className='nav-item'>
+                    <NavLink
                       className='nav-link'
                       aria-current='page'
                       to='/login'
                       id='login'
                     >
                       Login
-                    </Link>
+                    </NavLink>
                   </li>
                 </>
               )}
               {currentUser && (
                 <>
-                  <li className='nav-item' onClick={handleNav}>
-                    <Link
+                  <li className='nav-item'>
+                    <NavLink
                       className='nav-link'
                       aria-current='page'
                       to='/profile'
                       id='profile'
                     >
                       Profile
-                    </Link>
+                    </NavLink>
                   </li>
-                  <li className='nav-item' onClick={handleNav}>
-                    <Link
+                  <li className='nav-item'>
+                    <NavLink
                       className='nav-link'
                       aria-current='page'
                       to='/my-books'
                       id='my-books'
                     >
                       My Books
-                    </Link>
+                    </NavLink>
                   </li>
                 </>
               )}
               {currentUser && currentUser.user.role === 'author' && (
                 <>
-                  <li className='nav-item' onClick={handleNav}>
-                    <Link
+                  <li className='nav-item'>
+                    <NavLink
                       className='nav-link'
                       aria-current='page'
                       to='/post-book'
                       id='post-book'
                     >
                       Post Book
-                    </Link>
+                    </NavLink>
                   </li>
                 </>
               )}
               {currentUser && currentUser.user.role === 'user' && (
-                <li className='nav-item' onClick={handleNav}>
-                  <Link
+                <li className='nav-item'>
+                  <NavLink
                     className='nav-link'
                     aria-current='page'
                     to='/my-reviews'
                     id='my-reviews'
                   >
                     My Reviews
-                  </Link>
+                  </NavLink>
                 </li>
               )}
-              <li className='nav-item' onClick={handleNav}>
-                <Link
+              <li className='nav-item'>
+                <NavLink
                   className='nav-link'
                   aria-current='page'
                   to='/search'
                   id='search'
                 >
                   Search Book
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </div>
@@ -171,9 +146,9 @@ const Nav = (props) => {
             >
               <ul className='nav navbar-nav d-flex'>
                 <li className='nav-item'>
-                  <Link onClick={handleLogout} className='nav-link' to='/'>
+                  <NavLink onClick={handleLogout} className='nav-link' to='/'>
                     Logout
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
             </div>

@@ -4,12 +4,10 @@ import ReviewService from '../../service/reviewService';
 import Loading from '../tool/Loading';
 import Warning from '../tool/Warning';
 import Waiting from '../tool/Waiting';
-// import { linkSet } from '../tool/select';
 import { ChangeTitle } from '../tool/ChangeTitle';
 
 const MyReview = (props) => {
   ChangeTitle('My Review');
-  // let { currentUser, review, setReview, preLink, setPreLink } = props;
   let { currentUser, review, setReview } = props;
   const navigate = useNavigate();
 
@@ -86,7 +84,6 @@ const MyReview = (props) => {
               <button
                 className='btn btn-primary'
                 onClick={() => {
-                  // linkSet('#my-books', setPreLink, preLink);
                   navigate('/my-books');
                 }}
               >
