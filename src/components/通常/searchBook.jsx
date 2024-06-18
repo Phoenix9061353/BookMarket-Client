@@ -5,11 +5,12 @@ import BookingService from '../../service/bookingService';
 import Loading from '../tool/Loading';
 import Warning from '../tool/Warning';
 import Waiting from '../tool/Waiting';
-import { linkSet } from '../tool/select';
+// import { linkSet } from '../tool/select';
 import { ChangeTitle } from '../tool/ChangeTitle';
 
 const SearchBook = (props) => {
-  const { currentUser, book, setBook, preLink, setPreLink } = props;
+  // const { currentUser, book, setBook, preLink, setPreLink } = props;
+  const { currentUser, book, setBook } = props;
   ChangeTitle('Search');
   const navigate = useNavigate();
   let arrD = [];
@@ -47,7 +48,7 @@ const SearchBook = (props) => {
             );
 
             if (checking) {
-              linkSet('#my-books', setPreLink, preLink);
+              // linkSet('#my-books', setPreLink, preLink);
               navigate('/my-books');
             }
           } catch (err) {

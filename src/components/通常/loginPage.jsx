@@ -4,13 +4,16 @@ import { useForm } from 'react-hook-form';
 import AuthService from '../../service/authService';
 import Waiting from '../tool/Waiting';
 import Warning from '../tool/Warning';
-import { linkSet } from '../tool/select';
+// import { linkSet } from '../tool/select';
 import { ChangeTitle } from '../tool/ChangeTitle';
 
 ///////////////////////////////////////////////////////////
 const LoginPage = (props) => {
   ChangeTitle('Login');
-  const { preLink, setCurrentUser, setPreLink } = props;
+
+  // const { preLink, setCurrentUser, setPreLink } = props;
+  const { setCurrentUser } = props;
+
   const navigate = useNavigate();
   const { register, handleSubmit, reset } = useForm();
 
@@ -25,16 +28,20 @@ const LoginPage = (props) => {
       const user = await AuthService.login(data.email, data.password);
       if (user.data.data.token) {
         localStorage.setItem('user', JSON.stringify(user.data.data));
+        setCurrentUser(AuthService.getCurrentUser());
       }
-      setCurrentUser(AuthService.getCurrentUser());
 
       window.alert('登入成功！按下確定後導向個人檔案頁面...');
       setCheck(false);
-      linkSet('#profile', setPreLink);
+      // linkSet('#profile', setPreLink);
       navigate('/profile');
     } catch (err) {
-      setMsg(err.response.data.message);
-      setCheck(false);
+      if (err) {
+        console.log(err);
+        setMsg(err.response.data.message);
+
+        setCheck(false);
+      }
     }
   };
   ////////////////////////////////////////////////////////
@@ -93,7 +100,7 @@ const LoginPage = (props) => {
               className='link-underline-primary'
               href='#/signup'
               onClick={() => {
-                linkSet('#signup', setPreLink, preLink);
+                // linkSet('#signup', setPreLink, preLink);
                 navigate('/signup');
               }}
             >

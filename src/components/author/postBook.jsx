@@ -4,11 +4,12 @@ import { useForm } from 'react-hook-form';
 import BookService from '../../service/bookService';
 import Warning from '../tool/Warning';
 import Waiting from '../tool/Waiting';
-import { linkSet } from '../tool/select';
+// import { linkSet } from '../tool/select';
 import { ChangeTitle } from '../tool/ChangeTitle';
 
 const PostBook = (props) => {
-  const { currentUser, preLink, setPreLink } = props;
+  // const { currentUser, preLink, setPreLink } = props;
+  const { currentUser } = props;
   const navigate = useNavigate();
   const { register, handleSubmit, reset } = useForm();
 
@@ -43,7 +44,7 @@ const PostBook = (props) => {
       setPrepare(false);
       const check = window.confirm('上傳成功！導向作品頁面(My Book)?');
       if (check) {
-        linkSet('#my-books', setPreLink, preLink);
+        // linkSet('#my-books', setPreLink, preLink);
         navigate('/my-books');
       }
     } catch (err) {

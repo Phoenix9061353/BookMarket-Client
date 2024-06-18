@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import ReviewService from '../../service/reviewService';
 import Warning from '../tool/Warning';
 import Waiting from '../tool/Waiting';
-import { linkSet } from '../tool/select';
+// import { linkSet } from '../tool/select';
 
 ///////////////////////////////////////////////
 const PostReview = (props) => {
-  const { currentUser, book, preLink, setPreLink } = props;
+  // const { currentUser, book, preLink, setPreLink } = props;
+  const { currentUser, book } = props;
   const navigate = useNavigate();
   //state
   let [msg, setMsg] = useState('');
@@ -39,7 +40,7 @@ const PostReview = (props) => {
       }
       if (result.data.data.review) {
         window.alert('評論成功！導向評論集(My Reviews)頁面...');
-        linkSet('#my-reviews', setPreLink, preLink);
+        // linkSet('#my-reviews', setPreLink, preLink);
         navigate('/my-reviews');
       }
     } catch (err) {

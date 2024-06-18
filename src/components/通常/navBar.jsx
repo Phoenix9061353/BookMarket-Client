@@ -1,23 +1,24 @@
 /* eslint-disable no-restricted-globals */
-import React, { useEffect } from 'react';
+// import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import AuthService from '../../service/authService';
-import { linkSet } from '../tool/select';
+// import { linkSet } from '../tool/select';
 
 ////////////////////////////////////////////////////////
 const Nav = (props) => {
   const { currentUser, setCurrentUser, setBook, preLink, setPreLink } = props;
 
   const handleLogout = () => {
-    if (location.hash === '#/') {
-      linkSet('#Home', setPreLink);
-    } else {
-      linkSet(
-        '#Home',
-        setPreLink,
-        document.querySelector('#' + location.hash.slice(2))
-      );
-    }
+    // if (location.hash === '#/') {
+    //   linkSet('#Home', setPreLink);
+    // } else {
+    //   linkSet(
+    //     '#Home',
+    //     setPreLink,
+    //     document.querySelector('#' + location.hash.slice(2))
+    //   );
+    // }
     AuthService.logout();
     setCurrentUser(null);
     setBook({
@@ -44,14 +45,14 @@ const Nav = (props) => {
   };
 
   //useEffect
-  useEffect(() => {
-    if (location.hash === '#/' || location.hash === '') {
-      linkSet('#Home', setPreLink);
-    } else if (document.querySelector('#' + location.hash.slice(2))) {
-      linkSet('#' + location.hash.slice(2), setPreLink);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   if (location.hash === '#/' || location.hash === '') {
+  //     linkSet('#Home', setPreLink);
+  //   } else if (document.querySelector('#' + location.hash.slice(2))) {
+  //     linkSet('#' + location.hash.slice(2), setPreLink);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
   ////////////////////////////////////////
   return (
     <>

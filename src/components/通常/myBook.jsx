@@ -4,11 +4,12 @@ import BookService from '../../service/bookService';
 import BookingService from '../../service/bookingService';
 import Loading from '../tool/Loading';
 import Warning from '../tool/Warning';
-import { linkSet } from '../tool/select';
+// import { linkSet } from '../tool/select';
 import { ChangeTitle } from '../tool/ChangeTitle';
 
 const MyBookPage = (props) => {
-  const { currentUser, book, setBook, preLink, setPreLink } = props;
+  // const { currentUser, book, setBook, preLink, setPreLink } = props;
+  const { currentUser, book, setBook } = props;
   const navigate = useNavigate();
   ChangeTitle('My Book');
 
@@ -82,7 +83,7 @@ const MyBookPage = (props) => {
               <button
                 className='btn btn-primary'
                 onClick={() => {
-                  linkSet('#search', setPreLink, preLink);
+                  // linkSet('#search', setPreLink, preLink);
                   navigate('/search');
                 }}
               >
@@ -96,7 +97,7 @@ const MyBookPage = (props) => {
               <button
                 className='btn btn-primary'
                 onClick={() => {
-                  linkSet('#post-book', setPreLink, preLink);
+                  // linkSet('#post-book', setPreLink, preLink);
                   navigate('/post-book');
                 }}
               >
