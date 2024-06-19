@@ -1,11 +1,12 @@
 /* eslint-disable no-restricted-globals */
-import React from 'react';
+import React, { useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import AuthService from '../../service/authService';
 
 ////////////////////////////////////////////////////////
 const Nav = (props) => {
   const { currentUser, setCurrentUser, setBook } = props;
+  const ref = useRef(null);
 
   const handleLogout = () => {
     AuthService.logout();
@@ -21,6 +22,8 @@ const Nav = (props) => {
       type: '其他',
       price: 100,
     });
+    if (ref.current.classList.contains('active'))
+      ref.current.classList.remove('active');
   };
 
   ////////////////////////////////////////
@@ -133,6 +136,7 @@ const Nav = (props) => {
                   aria-current='page'
                   to='/search'
                   id='search'
+                  ref={ref}
                 >
                   Search Book
                 </NavLink>
