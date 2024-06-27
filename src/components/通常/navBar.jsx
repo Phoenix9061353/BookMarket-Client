@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import React, { useRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import AuthService from '../../service/authService';
 
 ////////////////////////////////////////////////////////
@@ -48,6 +48,7 @@ const Nav = (props) => {
             <ul className='nav navbar-nav mr-auto'>
               <li className='nav-item'>
                 <NavLink
+                  end
                   className='nav-link'
                   aria-current='page'
                   to='/'
@@ -150,9 +151,9 @@ const Nav = (props) => {
             >
               <ul className='nav navbar-nav d-flex'>
                 <li className='nav-item'>
-                  <NavLink onClick={handleLogout} className='nav-link' to='/'>
+                  <Link onClick={handleLogout} className='nav-link' to='/'>
                     Logout
-                  </NavLink>
+                  </Link>
                 </li>
               </ul>
             </div>
