@@ -131,7 +131,7 @@ const SearchBook = (props) => {
                         ? '尚無評價'
                         : `${b.ratingsAverage} / 5`}
                     </p>
-                    <p className='card-text'>價格: {b.price}</p>
+                    <p className='card-text'>價格： {b.price}</p>
                     <div className='gap-2 d-flex justify-content-end'>
                       <button
                         onClick={getSpeciedBook}
